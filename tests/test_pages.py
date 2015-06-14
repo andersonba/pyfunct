@@ -2,7 +2,8 @@ import unittest
 
 from pyfunct.pages import Page, REGISTERED_PAGES
 
-from pyfunct.exceptions import SelectorTypeNotSupportedException
+from pyfunct.exceptions import SelectorTypeNotSupportedException, \
+     ExistentElementException
 
 
 class PagesTestCase(unittest.TestCase):
@@ -106,3 +107,15 @@ class PagesTestCase(unittest.TestCase):
 
       self.assertFalse('element-one' in two.elements.keys())
       self.assertFalse('element-two' in one.elements.keys())
+
+    def test_page_unique_elements(self):
+      with self.assertRaises(ExistentElementException):
+        class PageOne(Page):
+          page_name = 'page-one'
+
+          @property
+          def elements_selectors(self):
+            return [
+              ('element-one', 'selector'),
+              ('element-one', 'selector')
+            ]

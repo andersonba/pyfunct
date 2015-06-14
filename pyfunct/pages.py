@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from pyfunct.exceptions import SelectorTypeNotSupportedException
+from pyfunct.exceptions import SelectorTypeNotSupportedException, \
+     ExistentElementException
 
 REGISTERED_PAGES = {}
 
@@ -67,6 +68,9 @@ class Page(object):
 
         if selection_type not in ('xpath', 'id', 'css', 'name'):
             raise SelectorTypeNotSupportedException
+
+        if alias in cls.elements.keys():
+          raise ExistentElementException(alias)
 
         cls.elements[alias] = {
             'selector': selector,
