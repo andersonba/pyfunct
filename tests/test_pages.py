@@ -85,3 +85,24 @@ class PagesTestCase(unittest.TestCase):
                          {'selection_type': 'xpath', 'selector': '//child'})
         self.assertEqual(child.elements['parent-element'],
                          {'selection_type': 'xpath', 'selector': '//parent'})
+
+    def test_page_avoiding_elements_inheritance(self):
+      class PageOne(Page):
+        page_name = 'page-one'
+
+        @property
+        def elements_selectors(self):
+          return [('element-one', 'selector')]
+
+      class PageTwo(Page):
+        page_name = 'page-two'
+
+        @property
+        def elements_selectors(self):
+          return [('element-two', 'selector')]
+
+      one = REGISTERED_PAGES['page-one']
+      two = REGISTERED_PAGES['page-two']
+
+      self.assertFalse('element-one' in two.elements.keys())
+      self.assertFalse('element-two' in one.elements.keys())

@@ -21,7 +21,7 @@ class PageMetaclass(type):
             raise NotImplementedError(
                 "You must specify a page name for %s." % cls.__name__)
 
-        if not hasattr(cls, 'elements'):
+        if not hasattr(cls, 'elements') or Page in bases:
             cls.elements = {}
 
         page = cls()
